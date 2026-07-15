@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "ara-handoff",
+      "name": "ara",
       "source": {
         "source": "local",
         "path": "./plugins/ara-codex"
