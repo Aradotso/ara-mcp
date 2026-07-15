@@ -1,9 +1,9 @@
 ---
-name: ara-handoff
+name: ara
 description: Create, monitor, or steer an Ara cloud coding session through the configured Ara MCP server. Use when the user asks to offload bounded implementation, debugging, review, or investigation work to Ara while local work continues.
 ---
 
-# Ara Handoff
+# Ara
 
 Ara sessions run in their own cloud sandbox against a connected repository. Use
 the configured Ara MCP tools for this workflow, not raw REST calls or a local
@@ -35,5 +35,8 @@ and belongs solely in that job's secret manager.
 - Only create sessions and automations the user explicitly asked for.
 - A tool absent from the MCP list is not authorized for the current principal;
   do not work around a missing scope.
+- Use `ara_api_request` only for an explicitly requested public API action. Its
+  path is relative to the approved workspace; never try to supply another org,
+  a full URL, or a secret value in a prompt or log.
 - Ara session credentials are scoped by the Ara service. Do not copy a user
   credential into an Ara run, repository secret, prompt, or artifact.
