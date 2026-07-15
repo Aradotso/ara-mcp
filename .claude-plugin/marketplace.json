@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ara",
+  "description": "Official Ara cloud-session handoff plugin for Claude Code.",
+  "owner": {
+    "name": "Ara",
+    "email": "security@ara.so"
+  },
+  "plugins": [
+    {
+      "name": "ara-handoff",
+      "source": "./plugins/ara-claude",
+      "description": "Create, monitor, and steer bounded Ara cloud coding sessions.",
+      "author": {
+        "name": "Ara",
+        "url": "https://ara.so"
+      },
+      "category": "productivity",
+      "repository": "https://github.com/Aradotso/ara-agent-integrations",
+      "license": "MIT",
+      "keywords": ["ara", "mcp", "cloud-coding", "handoff"]
+    }
+  ]
+}

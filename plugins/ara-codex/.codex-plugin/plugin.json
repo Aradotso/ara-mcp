@@ -1,0 +1,29 @@
+{
+  "name": "ara-handoff",
+  "version": "1.0.0",
+  "description": "Create, monitor, and steer bounded Ara cloud coding sessions from Codex.",
+  "author": {
+    "name": "Ara",
+    "url": "https://ara.so"
+  },
+  "homepage": "https://ara.so/product/api",
+  "repository": "https://github.com/Aradotso/ara-agent-integrations",
+  "license": "MIT",
+  "keywords": ["ara", "mcp", "cloud-coding", "handoff"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ara Handoff",
+    "shortDescription": "Hand bounded coding work to Ara.",
+    "longDescription": "Uses Ara's workspace-scoped OAuth MCP connection to create, monitor, and steer cloud coding sessions.",
+    "developerName": "Ara",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://ara.so/product/api",
+    "privacyPolicyURL": "https://ara.so/privacy-policy",
+    "termsOfServiceURL": "https://ara.so/terms-of-service",
+    "defaultPrompt": [
+      "Hand this bounded coding task to Ara and monitor it.",
+      "Show the status of my Ara coding sessions."
+    ]
+  }
+}

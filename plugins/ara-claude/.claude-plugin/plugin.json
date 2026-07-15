@@ -1,0 +1,13 @@
+{
+  "name": "ara-handoff",
+  "version": "1.0.0",
+  "description": "Create, monitor, and steer bounded Ara cloud coding sessions from Claude Code.",
+  "author": {
+    "name": "Ara",
+    "url": "https://ara.so"
+  },
+  "homepage": "https://ara.so/product/api",
+  "repository": "https://github.com/Aradotso/ara-agent-integrations",
+  "license": "MIT",
+  "keywords": ["ara", "mcp", "cloud-coding", "handoff"]
+}
