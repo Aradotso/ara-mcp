@@ -1,6 +1,7 @@
 {
   "name": "ara",
-  "version": "1.1.0",
+  "version": "1.1.1",
+  "displayName": "Ara",
   "description": "Use Ara's workspace-scoped public MCP from Claude Code.",
   "author": {
     "name": "Ara",
