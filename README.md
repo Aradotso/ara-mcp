@@ -37,17 +37,33 @@ or revoke it when the job ends.
 
 ## What the plugin does
 
-The Ara skill helps an agent create, monitor, and steer bounded Ara cloud coding
-sessions, and use any explicitly granted public Ara API capability. That includes
-write-only secrets and environment setup through `ara_api_request`. Ara work runs
-in a separate cloud sandbox against a connected repository; it never silently
-gains access to the local checkout.
+The Ara skill helps an agent set up and operate the selected Ara workspace. It
+uses typed Ara MCP tools to inspect or configure connected repositories,
+environment Recipes and runbooks, write-only secrets, organization MCP servers,
+reusable team skills, teammates, and bounded cloud coding sessions. The generic
+`ara_api_request` bridge remains an escape hatch for an explicitly requested
+public API operation that has no typed tool.
+
+For codebase setup, the skill reads current state first, asks for consent before
+uploading discovered secret values, records only non-secret operating guidance,
+and starts a fresh acceptance session to prove the resulting environment,
+skills, and MCP connections actually work. Registering a third-party OAuth MCP
+server does not authenticate that provider; the user still completes its OAuth
+flow in Ara. Local stdio commands and machine paths must also be portable to
+Ara's cloud sandbox.
+
+Ara work runs in a separate cloud sandbox against a connected repository; the
+plugin never silently gives Ara access to the local checkout. Internal Ara-only
+runtime skills and tools are supplied by that sandbox and are not bundled into
+this public client plugin.
 
 ## Security
 
 - The package points only to Ara's HTTPS remote MCP endpoint.
 - Workspace selection happens at Ara's OAuth consent screen, not in the plugin.
 - Ara validates organization membership and the exact public API scope for every request.
+- The skill asks for explicit destination approval before uploading discovered
+  environment or MCP credential values unless the request already named them.
 - The API bridge only accepts a relative path in the approved workspace; secret
   values are write-only and never returned.
 - The package never embeds a token, client secret, Authorization header, shell

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "ara",
-  "description": "Official Ara MCP plugin for Claude Code.",
+  "description": "Official Ara workspace setup and cloud coding MCP plugin for Claude Code.",
   "owner": {
     "name": "Ara",
     "email": "security@ara.so"
@@ -10,7 +10,7 @@
     {
       "name": "ara",
       "source": "./plugins/ara-claude",
-      "description": "Use Ara's workspace-scoped public MCP from Claude Code.",
+      "description": "Set up repositories, environments, secrets, MCP servers, skills, and cloud sessions through Ara MCP.",
       "author": {
         "name": "Ara",
         "url": "https://ara.so"
@@ -18,7 +18,7 @@
       "category": "productivity",
       "repository": "https://github.com/Aradotso/ara-mcp",
       "license": "MIT",
-      "keywords": ["ara", "mcp", "cloud-coding", "handoff"]
+      "keywords": ["ara", "mcp", "workspace-setup", "cloud-coding", "handoff"]
     }
   ]
 }

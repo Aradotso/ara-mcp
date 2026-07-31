@@ -1,8 +1,8 @@
 {
   "name": "ara",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "displayName": "Ara",
-  "description": "Use Ara's workspace-scoped public MCP from Claude Code.",
+  "description": "Set up and operate an Ara workspace from Claude Code through Ara MCP.",
   "author": {
     "name": "Ara",
     "url": "https://ara.so"
@@ -10,5 +10,5 @@
   "homepage": "https://ara.so/product/api",
   "repository": "https://github.com/Aradotso/ara-mcp",
   "license": "MIT",
-  "keywords": ["ara", "mcp", "cloud-coding", "handoff"]
+  "keywords": ["ara", "mcp", "workspace-setup", "cloud-coding", "handoff"]
 }
