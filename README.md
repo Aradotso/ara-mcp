@@ -64,3 +64,20 @@ codex plugin add ara@ara
 
 Use a temporary `HOME`/`CODEX_HOME` when testing the install commands so the
 test does not alter your personal marketplace configuration.
+
+## Tool names come from Ara's catalog
+
+The `ara_*` names in each plugin's `skills/ara/SKILL.md` must match the tools the
+MCP server actually advertises. The canonical list lives in
+`backend/src/ara-mcp/catalog.ts` in `Aradotso/github-native-engineer`, and the
+server returns exactly that list from `tools/list`.
+
+Two rules follow:
+
+- Only name a tool that `tools/list` returns. These skills tell agents that "a
+  tool absent from the MCP list is not authorized", so naming an unadvertised
+  tool makes a skill contradict itself.
+- When a tool is renamed in that repo, update these skills in the same change.
+  Deprecated names keep dispatching through an alias, so a stale reference fails
+  quietly instead of erroring, and only surfaces as an agent that declines to use
+  the tool.

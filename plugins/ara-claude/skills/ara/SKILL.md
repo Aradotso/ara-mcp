@@ -26,7 +26,7 @@ and belongs solely in that job's secret manager.
 3. Return the session URL immediately. Keep local work independent; Ara's
    sandbox is separate from the current checkout.
 4. Use `ara_session_events` to inspect progress or artifacts, and
-   `ara_session_interact` to clarify scope or steer the run.
+   `ara_session_send` to clarify scope or steer the run.
 5. Report the final status and PR/artifact links. Never claim a task landed
    without checking the returned session state.
 
