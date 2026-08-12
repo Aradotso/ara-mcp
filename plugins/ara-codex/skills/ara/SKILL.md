@@ -22,11 +22,16 @@ and belongs solely in that job's secret manager.
 1. Confirm the task is bounded and identify the connected `owner/repo`.
 2. Use `ara_session_create` with a concise prompt and the repository. Mention
    acceptance criteria, relevant files, test expectations, and whether a PR is
-   expected.
+   expected. Pass `model` and/or `reasoning_effort` to override the
+   organization default for this session.
 3. Return the session URL immediately. Keep local work independent; Ara's
    sandbox is separate from the current checkout.
 4. Use `ara_session_events` to inspect progress or artifacts, and
-   `ara_session_send` to clarify scope or steer the run.
+   `ara_session_send` to clarify scope or steer the run. If a session stalls
+   or fails before doing real work, resend with `model` and/or
+   `reasoning_effort` set to retry on a different model rather than only
+   reporting the failure; this starts a new continuation run, not an in-place
+   retry.
 5. Report the final status and PR/artifact links. Never claim a task landed
    without checking the returned session state.
 
