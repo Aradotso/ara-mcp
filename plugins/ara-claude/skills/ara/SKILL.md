@@ -38,8 +38,9 @@ and belongs solely in that job's secret manager.
 ## Pull-request iteration
 
 - Use `ara_pr_get` as the indexed snapshot for the live run's pull or merge
-  request. It includes metadata, commits, changed-file patches, checks, formal
-  reviews, inline comments, and discussion.
+  request. It includes metadata, commits, paged changed-file patches, checks,
+  formal reviews, inline comments, and discussion. Follow the file and feedback
+  next offsets until null when a review requires the complete large-PR context.
 - When a check fails, call `ara_pr_check_get` with its `check_run_id` or exact
   name from `ara_pr_get`. It returns annotations, GitHub Actions failed steps,
   and a bounded redacted job-log tail when the provider exposes one.
