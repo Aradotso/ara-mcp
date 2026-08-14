@@ -5,9 +5,10 @@ description: Create, monitor, or steer an Ara cloud coding session through the c
 
 # Ara
 
-Ara sessions run in their own cloud sandbox against a connected repository. Use
-the configured Ara MCP tools for this workflow, not raw REST calls or a local
-shell wrapper.
+Ara sessions run in their own cloud sandbox. A repository is optional when the
+Session starts and can be attached later without creating another user task.
+Use the configured Ara MCP tools for this workflow, not raw REST calls or a
+local shell wrapper.
 
 ## Authentication
 
@@ -19,11 +20,17 @@ and belongs solely in that job's secret manager.
 
 ## Offload flow
 
-1. Confirm the task is bounded and identify the connected `owner/repo`.
-2. Use `ara_session_create` with a concise prompt and the repository. Mention
+1. Confirm the task is bounded. Identify the exact connected `owner/repo` when
+   the request makes it clear; do not invent one when it does not.
+2. Use `ara_session_create` once to start the top-level Session, with the
+   repository when known or without one for a repository-neutral start. Mention
    acceptance criteria, relevant files, test expectations, and whether a PR is
-   expected. Pass `model` and/or `reasoning_effort` to override the
-   organization default for this session.
+   expected. Pass `model` and/or `reasoning_effort` to override the organization
+   default for this Session. Never create a replacement Session merely to hand
+   running work to a repository: the Session's Brain attaches the exact
+   connected repository and continues the original task in the same chat,
+   preserving its inputs and model settings. Attachment is setup, not
+   completion.
 3. Return the session URL immediately. Keep local work independent; Ara's
    sandbox is separate from the current checkout.
 4. Use `ara_session_events` to inspect progress or artifacts, and
@@ -62,6 +69,8 @@ and belongs solely in that job's secret manager.
 ## Guardrails
 
 - Only create sessions and automations the user explicitly asked for.
+- A separate Session is for an explicitly independent task, not for acquiring
+  repository context during work that is already running.
 - A tool absent from the MCP list is not authorized for the current principal;
   do not work around a missing scope.
 - Use `ara_api_request` only for an explicitly requested public API action. Its
