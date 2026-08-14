@@ -43,7 +43,9 @@ and belongs solely in that job's secret manager.
   resolved/unresolved review threads, discussion, reviewer/assignee/label options,
   visual evidence, supported mutations, merge operation/blocker state, and
   explicit per-section completeness. Follow every file and feedback next offset
-  until null; never treat an unavailable section as an empty one.
+  until null. When a review thread has a comments next offset, pass its id as
+  `review_thread_id` and page `thread_comment_offset` until null. Never treat
+  an unavailable or provider-incomplete section as an empty one.
 - When a check fails, call `ara_pr_check_get` with its `check_run_id` or exact
   name from `ara_pr_get`. It returns annotations, GitHub Actions failed steps,
   and a bounded redacted job-log tail when the provider exposes one.
