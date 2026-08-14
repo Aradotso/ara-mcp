@@ -38,15 +38,26 @@ and belongs solely in that job's secret manager.
 ## Pull-request iteration
 
 - Use `ara_pr_get` as the indexed snapshot for the live run's pull or merge
-  request. It includes metadata, commits, paged changed-file patches, checks,
-  formal reviews, inline comments, and discussion. Follow the file and feedback
-  next offsets until null when a review requires the complete large-PR context.
+  request. It includes identity/state, merge readiness and requirements, commits,
+  paged changed-file patches, every check, formal reviews, inline comments,
+  resolved/unresolved review threads, discussion, reviewer/assignee/label options,
+  visual evidence, supported mutations, merge operation/blocker state, and
+  explicit per-section completeness. Follow every file and feedback next offset
+  until null. When an embedded review thread has a comments next offset, pass its
+  id as `review_thread_id`; then follow
+  `review_thread_comments_page.next_offset` with `thread_comment_offset`
+  until null. Never treat an unavailable or provider-incomplete section as an
+  empty one.
 - When a check fails, call `ara_pr_check_get` with its `check_run_id` or exact
   name from `ara_pr_get`. It returns annotations, GitHub Actions failed steps,
   and a bounded redacted job-log tail when the provider exposes one.
 - Re-read `ara_pr_get` after pushing a repair. Iterate until the relevant checks
   pass and all actionable review feedback is resolved; never weaken a check to
   manufacture a green result.
+- Use `ara_pr_feedback_update` to post a summary, reply to inline feedback,
+  react to discussion, and resolve or reopen review threads. Use `ara_pr_update`
+  for title/body, draft/ready/close, base, reviewer, assignee, and label changes;
+  pass the snapshot's head SHA as `expected_head_sha` when changing state.
 
 ## Guardrails
 
