@@ -44,6 +44,9 @@ and belongs solely in that job's secret manager.
 
 ## Pull-request iteration
 
+- For user-visible changes, attach honest run-scoped evidence with
+  `ara_attach_screenshot` or `ara_attach_recording`, run the returned upload
+  command, and place the returned durable Markdown in the pull-request body.
 - Use `ara_pr_get` as the indexed snapshot for the live run's pull or merge
   request. It includes identity/state, merge readiness and requirements, commits,
   paged changed-file patches, every check, formal reviews, inline comments,
