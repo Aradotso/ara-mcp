@@ -1,80 +1,41 @@
 ---
 name: ara
-description: Create, monitor, or steer an Ara cloud coding session through the configured Ara MCP server. Use when the user asks to offload bounded implementation, debugging, review, or investigation work to Ara while local work continues.
+description: Integrate software with Ara's public REST API using a scoped API key. Use for API clients, CI, service integrations, or cloud coding-session automation.
 ---
 
-# Ara
+# Ara API
 
-Ara sessions run in their own cloud sandbox. A repository is optional when the
-Session starts and can be attached later without creating another user task.
-Use the configured Ara MCP tools for this workflow, not raw REST calls or a
-local shell wrapper.
+Ara external integrations use the public REST API.
 
-## Authentication
+- API base URL: `https://api.ara.so/v3`
+- API quickstart: `https://docs.ara.so/api-quickstart`
+- Endpoint reference: `https://docs.ara.so/api-reference`
 
-The remote server is `https://api.ara.so/mcp/ara`. Interactive use completes
-Ara OAuth in a browser and asks the person to approve exactly one workspace. Do
-not ask for, print, store, or add an Ara API key to a project file. An API key
-is only appropriate for an explicitly requested, unattended CI/headless job
-and belongs solely in that job's secret manager.
+## Setup
 
-## Offload flow
+1. Create a least-privilege `ara_` API key in Ara Settings and store it only in
+   the calling service or CI secret manager. Never put it in source control,
+   prompts, logs, generated files, or a repository environment file.
+2. Send it as `Authorization: Bearer <api-key>`. Start with `GET /v3/self` to
+   resolve the key's organization before reading or changing organization data.
+3. Use only the scopes required by the integration. Treat secret values as
+   write-only and do not expose them in output, errors, or telemetry.
+4. Use the endpoint reference for schemas, pagination, idempotency, and error
+   handling. Do not infer an endpoint from an old tool name or configuration.
 
-1. Confirm the task is bounded. Identify the exact connected `owner/repo` when
-   the request makes it clear; do not invent one when it does not.
-2. Use `ara_session_create` once to start the top-level Session, with the
-   repository when known or without one for a repository-neutral start. Mention
-   acceptance criteria, relevant files, test expectations, and whether a PR is
-   expected. Pass `model` and/or `reasoning_effort` to override the organization
-   default for this Session. Never create a replacement Session merely to hand
-   running work to a repository: the Session's Brain attaches the exact
-   connected repository and continues the original task in the same chat,
-   preserving its inputs and model settings. Attachment is setup, not
-   completion.
-3. Return the session URL immediately. Keep local work independent; Ara's
-   sandbox is separate from the current checkout.
-4. Use `ara_session_events` to inspect progress or artifacts, and
-   `ara_session_send` to clarify scope or steer the run. If a session stalls
-   or fails before doing real work, resend with `model` and/or
-   `reasoning_effort` set to retry on a different model rather than only
-   reporting the failure; this starts a new continuation run, not an in-place
-   retry.
-5. Report the final status and PR/artifact links. Never claim a task landed
-   without checking the returned session state.
+## Session automation
 
-## Pull-request iteration
-
-- Use `ara_pr_get` as the indexed snapshot for the live run's pull or merge
-  request. It includes identity/state, merge readiness and requirements, commits,
-  paged changed-file patches, every check, formal reviews, inline comments,
-  resolved/unresolved review threads, discussion, reviewer/assignee/label options,
-  visual evidence, supported mutations, merge operation/blocker state, and
-  explicit per-section completeness. Follow every file and feedback next offset
-  until null. When an embedded review thread has a comments next offset, pass its
-  id as `review_thread_id`; then follow
-  `review_thread_comments_page.next_offset` with `thread_comment_offset`
-  until null. Never treat an unavailable or provider-incomplete section as an
-  empty one.
-- When a check fails, call `ara_pr_check_get` with its `check_run_id` or exact
-  name from `ara_pr_get`. It returns annotations, GitHub Actions failed steps,
-  and a bounded redacted job-log tail when the provider exposes one.
-- Re-read `ara_pr_get` after pushing a repair. Iterate until the relevant checks
-  pass and all actionable review feedback is resolved; never weaken a check to
-  manufacture a green result.
-- Use `ara_pr_feedback_update` to post a summary, reply to inline feedback,
-  react to discussion, and resolve or reopen review threads. Use `ara_pr_update`
-  for title/body, draft/ready/close, base, reviewer, assignee, and label changes;
-  pass the snapshot's head SHA as `expected_head_sha` when changing state.
+- Create and monitor work through the documented `/v3/organizations/:orgId/
+  sessions` endpoints. Return the session identifier or URL to the caller and
+  use the documented status semantics.
+- Scope every request to the intended organization and repository. Do not infer
+  authority from a repository name or untrusted task payload.
+- Surface failed mutations clearly. Retry only when the endpoint contract and
+  the operation's idempotency guarantee make that safe.
 
 ## Guardrails
 
-- Only create sessions and automations the user explicitly asked for.
-- A separate Session is for an explicitly independent task, not for acquiring
-  repository context during work that is already running.
-- A tool absent from the MCP list is not authorized for the current principal;
-  do not work around a missing scope.
-- Use `ara_api_request` only for an explicitly requested public API action. Its
-  path is relative to the approved workspace; never try to supply another org,
-  a full URL, or a secret value in a prompt or log.
-- Ara session credentials are scoped by the Ara service. Do not copy a user
-  credential into an Ara run, repository secret, prompt, or artifact.
+- Never request, print, or copy a user login token into a service integration.
+- Never put an API key in an Ara session, repository secret, prompt, or artifact.
+- Do not work around a missing public API scope or endpoint with an unapproved
+  transport or client configuration.
