@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "ara": {
-      "type": "http",
-      "url": "https://api.ara.so/mcp/ara"
-    }
-  }
-}

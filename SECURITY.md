@@ -2,12 +2,14 @@
 
 ## Scope
 
-This repository contains declarative marketplace packages and workflow guidance.
-It must remain secretless: do not add API keys, OAuth client secrets,
-Authorization headers, cookies, local hooks, or executable setup scripts.
+This repository contains declarative marketplace packages and public API
+integration guidance. It must remain secretless: do not add API keys, client
+secrets, Authorization headers, cookies, local hooks, executable setup scripts,
+or remote-tool configuration.
 
-The packages may point only to Ara's HTTPS public MCP endpoint:
-`https://api.ara.so/mcp/ara`.
+External integrations use the public REST API at `https://api.ara.so/v3` with a
+least-privilege `ara_` API key kept only in the calling service or CI secret
+manager.
 
 ## Reporting a vulnerability
 
@@ -17,5 +19,5 @@ Do not include secrets, access tokens, or customer data in the initial report.
 ## Supported release
 
 Only the default branch and the marketplace packages published from it are
-supported. A client must complete Ara OAuth in a browser; API keys are only for
-explicit, unattended integrations that use a secret manager.
+supported. The packages never create or store user credentials; callers use a
+scoped API key for explicitly requested service or CI integrations.

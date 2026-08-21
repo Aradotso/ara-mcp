@@ -1,7 +1,7 @@
 {
   "name": "ara",
-  "version": "1.1.1",
-  "description": "Use Ara's workspace-scoped public MCP from Codex.",
+  "version": "2.0.0",
+  "description": "Build scoped Ara REST API integrations from Codex.",
   "author": {
     "name": "Ara",
     "url": "https://ara.so"
@@ -9,12 +9,12 @@
   "homepage": "https://ara.so/product/api",
   "repository": "https://github.com/Aradotso/ara-mcp",
   "license": "MIT",
-  "keywords": ["ara", "mcp", "cloud-coding", "handoff"],
+  "keywords": ["ara", "api", "rest", "cloud-coding", "handoff"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Ara",
-    "shortDescription": "Ara's workspace-scoped public MCP.",
-    "longDescription": "Uses Ara's workspace-scoped OAuth MCP connection for cloud sessions and the scoped public Ara API.",
+    "shortDescription": "Build an API-key integration with Ara.",
+    "longDescription": "Guides a scoped public REST API integration for Ara sessions and workspace resources. It does not configure a remote tool server or browser authorization grant.",
     "developerName": "Ara",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
@@ -22,8 +22,9 @@
     "privacyPolicyURL": "https://ara.so/privacy-policy",
     "termsOfServiceURL": "https://ara.so/terms-of-service",
     "defaultPrompt": [
-      "Hand this bounded coding task to Ara and monitor it.",
-      "Show the status of my Ara coding sessions."
+      "Add a scoped Ara public API integration to this repository.",
+      "Automate this bounded Ara coding task with the documented REST API.",
+      "Review this Ara API client for key scope, secret handling, and error recovery."
     ],
     "composerIcon": "./assets/ara-mark-black-on-white.png",
     "logo": "./assets/ara-mark-black-on-white.png",

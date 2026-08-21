@@ -1,9 +1,9 @@
-# Ara MCP
+# Ara API integration guidance
 
-Official, secretless Ara MCP integrations for Codex and Claude Code. They connect to
-Ara's remote MCP server at `https://api.ara.so/mcp/ara`; people sign in in their
-browser and approve exactly one Ara workspace. The packages contain no API keys,
-headers, local executables, hooks, or OAuth client secret.
+Official, secretless API-integration guidance for Codex and Claude Code. These
+plugins help an agent build against Ara's public REST API; they do not configure
+a remote tool server, browser authorization, API key, header, local executable,
+or hook.
 
 ## Install
 
@@ -14,10 +14,6 @@ codex plugin marketplace add Aradotso/ara-mcp
 codex plugin add ara@ara
 ```
 
-Codex discovers Ara's OAuth metadata automatically. If it prompts you to sign
-in, complete the Ara browser consent and choose the workspace the connection may
-access.
-
 ### Claude Code
 
 ```sh
@@ -25,33 +21,36 @@ claude plugin marketplace add Aradotso/ara-mcp
 claude plugin install ara@ara
 ```
 
-Claude Code uses the same remote server and browser OAuth flow. It does not need
-an Ara API key in your repository or local configuration.
+The plugin only provides API-integration guidance. It does not sign anyone in,
+request a browser approval, or create a credential.
 
-## Headless CI
+## Build an integration
 
-OAuth is for interactive clients. For an unattended job, create a minimally
-scoped, organization-pinned `ara_` key in **Settings → Ara API**, put it only in
-the job's secret manager, and call Ara's public REST API or MCP endpoint. Rotate
-or revoke it when the job ends.
+1. Create a minimally scoped, organization-pinned `ara_` key in **Settings →
+   Ara API** and place it only in the calling service or CI secret manager.
+2. Call the public REST API at `https://api.ara.so/v3`; start with
+   `GET /v3/self` to resolve the key's organization.
+3. Use the [API quickstart](https://docs.ara.so/api-quickstart) and
+   [endpoint reference](https://docs.ara.so/api-reference) for schemas,
+   pagination, idempotency, and error handling.
+4. Rotate or revoke the key when the integration ends. Never put it in a
+   repository, prompt, artifact, log, or generated file.
 
 ## What the plugin does
 
-The Ara skill helps an agent create, monitor, and steer bounded Ara cloud coding
-sessions, and use any explicitly granted public Ara API capability. That includes
-write-only secrets and environment setup through `ara_api_request`. Ara work runs
-in a separate cloud sandbox against a connected repository; it never silently
-gains access to the local checkout.
+The Ara skill guides an agent to create and monitor bounded cloud coding
+sessions through the documented REST API. It does not grant Ara access to the
+local checkout or act on behalf of a user without an explicitly supplied,
+scoped API key.
 
 ## Security
 
-- The package points only to Ara's HTTPS remote MCP endpoint.
-- Workspace selection happens at Ara's OAuth consent screen, not in the plugin.
-- Ara validates organization membership and the exact public API scope for every request.
-- The API bridge only accepts a relative path in the approved workspace; secret
-  values are write-only and never returned.
-- The package never embeds a token, client secret, Authorization header, shell
-  command, or local hook.
+- The package contains no credential, authorization header, local hook, or
+  executable setup step.
+- API keys are supplied only by the calling service or CI secret manager; they
+  are never stored or read by the package.
+- Every API request must use the intended organization and the scopes required
+  for that operation.
 - Read [SECURITY.md](SECURITY.md) to report a vulnerability.
 
 ## Development verification
@@ -64,20 +63,3 @@ codex plugin add ara@ara
 
 Use a temporary `HOME`/`CODEX_HOME` when testing the install commands so the
 test does not alter your personal marketplace configuration.
-
-## Tool names come from Ara's catalog
-
-The `ara_*` names in each plugin's `skills/ara/SKILL.md` must match the tools the
-MCP server actually advertises. The canonical list lives in
-`backend/src/ara-mcp/catalog.ts` in `Aradotso/github-native-engineer`, and the
-server returns exactly that list from `tools/list`.
-
-Two rules follow:
-
-- Only name a tool that `tools/list` returns. These skills tell agents that "a
-  tool absent from the MCP list is not authorized", so naming an unadvertised
-  tool makes a skill contradict itself.
-- When a tool is renamed in that repo, update these skills in the same change.
-  Deprecated names keep dispatching through an alias, so a stale reference fails
-  quietly instead of erroring, and only surfaces as an agent that declines to use
-  the tool.
